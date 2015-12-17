@@ -3,7 +3,7 @@
 Plugin Name: Parsedown-md
 Description: markdown parser, based on `Parsedown` <http://parsedown.org/>
 Author: h.matsuo
-Version: 1.0
+Version: 1.1
 */
 
 require_once __DIR__ . '/parsedown/parsedown.php';
@@ -34,10 +34,16 @@ class ParsedownMd
         add_filter('comment_text', array(&$this, 'parsedown'));
     }
 
-    public function parsedown($content)
+    /**
+     * @param $content
+     * @param string $class
+     * @return string
+     */
+    public function parsedown($content, $class = 'markdown')
     {
-        return '<div class="post markdown">' . $this->pd->text($content) . '</div>';
+        $attr = ($class !== false) ? ' class="' . esc_attr($class). '"' : '';
+        return "<div{$attr}>" . $this->pd->text($content) . '</div>';
     }
 }
 
-new ParsedownMd();
+$ParseDownMd = new ParsedownMd();
